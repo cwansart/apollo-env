@@ -1,23 +1,31 @@
 #!/usr/bin/env sh
 
+set -e
+
 export PATH="/apollo/bin:$PATH"
 export LD_LIBRARY_PATH="/apollo/lib:$LD_LIBRARY_PATH"
 
-FOLDER_NAME="make-4.4.1"
-TARBALL_NAME="$FOLDER_NAME.tar.gz"
-TARBALL_URL="https://ftp.fau.de/gnu/make/$TARBALL_NAME"
-SOURCE_DIR="/apollo/src"
+PROJECT_NAME="make-4.4.1"
+ARCHIVE_EXT="tar.gz"
+TARBALL_URL="https://ftp.fau.de/gnu/make"
+
 INSTALL_DIR="/apollo"
+SOURCE_DIR="/apollo/src/flex"
 
-if [ ! -e "$SOURCE_DIR/$TARBALL_NAME" ]; then
-    curl "$TARBALL_URL" -o "$SOURCE_DIR/$TARBALL_NAME"
+SOURCE_PATH="$SOURCE_DIR/$PROJECT_NAME"
+ARCHIVE_NAME="$PROJECT_NAME.$ARCHIVE_EXT"
+ARCHIVE_PATH="$SOURCE_DIR/$ARCHIVE_NAME"
+
+if [ ! -e "$ARCHIVE_PATH" ]; then
+    curl -L "$PROJECT_URL/$ARCHIVE_NAME" -o "$ARCHIVE_PATH"
 fi
 
-if [ ! -d "$SOURCE_DIR/$FOLDER_NAME" ]; then
-    tar xvf "$SOURCE_DIR/$TARBALL_NAME" -C "$SOURCE_DIR"
+if [ ! -d "$SOURCE_PATH" ]; then
+    tar xvf "$ARCHIVE_PATH" -C "$SOURCE_DIR"
 fi
 
-cd "$SOURCE_DIR/$FOLDER_NAME"
+
+cd "$SOURCE_PATH"
 
 ./configure --prefix="$INSTALL_DIR" --host=x86_64-linux-gnu
 make -j $(nproc)

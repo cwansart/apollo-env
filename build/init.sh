@@ -1,5 +1,7 @@
 #!/usr/bin/env sh
 
+set -e
+
 if ! command -v podman > /dev/null 2>&1; then
     echo "Error: podman is not installed."
     exit 1
@@ -24,4 +26,5 @@ chmod +x base/build.sh
 # TODO: build glibc here
 #####################################
 
-./build.sh make
+# ./build.sh make
+# ./build.sh flex

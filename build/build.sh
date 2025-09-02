@@ -1,5 +1,7 @@
 #!/usr/bin/env sh
 
+set -e
+
 APOLLO_DIR="$(cd $(dirname "$0")/.. && pwd)"
 APOLLO_BUILD_DIR="$APOLLO_DIR/build"
 APOLLO_ROOTFS_DIR="$APOLLO_DIR/rootfs"
@@ -20,7 +22,7 @@ if [ ! -d "$PROJECT_DIR" ]; then
     exit 1
 fi
 
-mkdir -p "$APOLLO_ROOTFS_DIR"
+mkdir -p "$APOLLO_ROOTFS_DIR/src"
 
 chmod +x "$PROJECT_DIR/build.sh"
 

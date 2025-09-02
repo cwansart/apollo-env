@@ -1,26 +1,42 @@
 #!/usr/bin/env sh
 
+set -e
+
 export PATH="/apollo/bin:$PATH"
 export LD_LIBRARY_PATH="/apollo/lib:$LD_LIBRARY_PATH"
 
-VERSION_TAG="releases/gcc-15.2.0"
-REPO_URL="https://gcc.gnu.org/git/gcc.git"
-SOURCE_DIR="/apollo/src/gcc"
-INSTALL_DIR="/apollo"
+PROJECT_NAME="gcc-15.2.0"
+ARCHIVE_EXT="tar.gz"
+PROJECT_URL="https://ftp.gwdg.de/pub/misc/gcc/releases/gcc-15.2.0"
+HASH="7294d65cc1a0558cb815af0ca8c7763d86f7a31199794ede3f630c0d1b0a5723"
 
-if [ ! -d "$SOURCE_DIR" ]; then
-    git clone "$REPO_URL" "$SOURCE_DIR"
+INSTALL_DIR="/apollo"
+SOURCE_DIR="/apollo/src"
+
+SOURCE_PATH="$SOURCE_DIR/$PROJECT_NAME"
+ARCHIVE_NAME="$PROJECT_NAME.$ARCHIVE_EXT"
+ARCHIVE_PATH="$SOURCE_DIR/$ARCHIVE_NAME"
+HASH_FILE="$ARCHIVE_PATH.sha256"
+
+
+if [ ! -e "$ARCHIVE_PATH" ]; then
+    curl -L "$PROJECT_URL/$ARCHIVE_NAME" -o "$ARCHIVE_PATH"
+    printf "%s *%s\n" "$HASH" "$ARCHIVE_PATH" > "$HASH_FILE" 
+    if ! sha256sum --check --status "$HASH_FILE"; then
+        exit 1
+    fi
+    rm -f "$HASH_FILE"
 fi
 
-cd "$SOURCE_DIR"
+if [ ! -d "$SOURCE_PATH" ]; then
+    tar xvf "$ARCHIVE_PATH" -C "$SOURCE_DIR"
+fi
 
-git fetch --all
-git checkout "$VERSION_TAG"
 
-if echo "$@" | grep -q -- --clean; then
-    if [ -f Makefile ]; then
-        make distclean
-    fi
+cd "$SOURCE_PATH"
+
+if [ "$1" = "--clean" ]; then
+    make distclean
 fi
 
 ./configure --prefix="$INSTALL_DIR" --host=x86_64-linux-gnu --disable-multilib
