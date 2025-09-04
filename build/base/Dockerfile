@@ -1,4 +1,4 @@
-FROM ubuntu:25.04
+FROM debian:13-slim
 
 RUN apt-get update && \
     apt-get install -y \
