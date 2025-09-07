@@ -1,5 +1,8 @@
 FROM debian:13-slim
 
+ARG UID=1000
+ARG GID=1000
+
 RUN apt-get update && \
     apt-get install -y \
         # general \
@@ -16,3 +19,11 @@ RUN apt-get update && \
         libtool \
         texinfo && \
     rm -rf /var/lib/apt/lists/*
+
+RUN groupadd -g $GID user && \
+    useradd -u $UID -g $GID -m -s /bin/bash user
+
+USER user
+
+WORKDIR /apollo
+

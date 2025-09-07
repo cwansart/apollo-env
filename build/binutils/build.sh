@@ -4,16 +4,16 @@ set -e
 
 umask 022
 
-export LANG=POSIX
+export LC_ALL=POSIX
 export PATH="/apollo/bin:$PATH"
 export LD_LIBRARY_PATH="/apollo/lib:$LD_LIBRARY_PATH"
 
-PROJECT_NAME="gcc-15.2.0"
+PROJECT_NAME="binutils-2.45"
 ARCHIVE_EXT="tar.xz"
-PROJECT_URL="https://sourceware.org/pub/gcc/releases/gcc-15.2.0/gcc-15.2.0"
-HASH="438fd996826b0c82485a29da03a72d71d6e3541a83ec702df4271f6fe025d24e"
+PROJECT_URL="https://sourceware.org/pub/binutils/releases/"
+HASH="c50c0e7f9cb188980e2cc97e4537626b1672441815587f1eab69d2a1bfbef5d2"
 
-INSTALL_DIR="/apollo"
+INSTALL_DIR="/apollo/bootstrap"
 SOURCE_DIR="/apollo/src"
 
 SOURCE_PATH="$SOURCE_DIR/$PROJECT_NAME"
@@ -38,10 +38,15 @@ fi
 
 cd "$SOURCE_PATH"
 
-if [ "$1" = "--clean" ]; then
-    make distclean
-fi
-
-./configure --prefix="$INSTALL_DIR" --host=x86_64-linux-gnu --disable-multilib
+mkdir build
+cd build
+../configure --prefix="$INSTALL_DIR" \
+             --with-sysroot="$INSTALL_DIR" \
+             --target="$(uname -m)-apollo-linux-gnu" \
+             --disable-nls       \
+             --enable-gprofng=no \
+             --disable-werror    \
+             --enable-new-dtags  \
+             --enable-default-hash-style=gnu
 make -j $(nproc)
 make install

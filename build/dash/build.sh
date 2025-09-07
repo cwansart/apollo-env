@@ -8,10 +8,10 @@ export LANG=POSIX
 export PATH="/apollo/bin:$PATH"
 export LD_LIBRARY_PATH="/apollo/lib:$LD_LIBRARY_PATH"
 
-PROJECT_NAME="gcc-15.2.0"
-ARCHIVE_EXT="tar.xz"
-PROJECT_URL="https://sourceware.org/pub/gcc/releases/gcc-15.2.0/gcc-15.2.0"
-HASH="438fd996826b0c82485a29da03a72d71d6e3541a83ec702df4271f6fe025d24e"
+PROJECT_NAME="dash-0.5.12"
+ARCHIVE_EXT="tar.gz"
+PROJECT_URL="http://gondor.apana.org.au/~herbert/dash/files/"
+HASH="6a474ac46e8b0b32916c4c60df694c82058d3297d8b385b74508030ca4a8f28a"
 
 INSTALL_DIR="/apollo"
 SOURCE_DIR="/apollo/src"
@@ -42,6 +42,6 @@ if [ "$1" = "--clean" ]; then
     make distclean
 fi
 
-./configure --prefix="$INSTALL_DIR" --host=x86_64-linux-gnu --disable-multilib
+./configure --prefix="$INSTALL_DIR" 
 make -j $(nproc)
 make install

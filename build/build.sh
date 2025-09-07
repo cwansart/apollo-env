@@ -27,6 +27,6 @@ mkdir -p "$APOLLO_ROOTFS_DIR/src"
 chmod +x "$PROJECT_DIR/build.sh"
 
 podman run -it --rm \
-    -v "$APOLLO_ROOTFS_DIR":/apollo \
+    -v "$APOLLO_ROOTFS_DIR":/apollo:U \
     -v "$PROJECT_DIR/build.sh":/apollo/build.sh:ro \
     apollo-env-base /apollo/build.sh "$BUILD_ARGS"
