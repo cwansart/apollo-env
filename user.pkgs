@@ -1,0 +1,5 @@
+# List of packages that will be installed when runnuing scripts/build_apps.sh.
+
+# user/vim
+# user/flex
+# user/git

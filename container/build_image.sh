@@ -2,7 +2,7 @@
 
 BASE_DIR="$(cd "$(dirname "$0")" && pwd)"
 podman build \
-    -t apollo-env-base \
+    -t apollo-forge-base \
     --build-arg UID="$(id -u)" \
     --build-arg GID="$(id -g)" \
     "$BASE_DIR"
