@@ -11,21 +11,21 @@ if [ -z "$1" ]; then
     exit 1
 fi
 
-PACKAGE_NAME="$1"
-PACKAGE_SCRIPT="$PACKAGES_DIR/$PROJECT_NAME.sh"
+PACKAGE_PATH="$1"
+PACKAGE_SCRIPT="$PACKAGES_DIR/$PACKAGE_PATH.sh"
 
 shift
 BUILD_ARGS="$@"
 
-if [ ! -e "$PACKAGE_SCRIPT" ]; then
-    echo "Error: Build script '$PROJECT_NAME' does not exist in '$PACKAGES_DIR'."
+if [ ! -f "$PACKAGE_SCRIPT" ]; then
+    echo "Error: Build script '$PACKAGE_SCRIPT' does not exist"
     exit 1
 fi
 
-mkdir -p "$ROOTFS_DIR/src"
-
+echo "Start build container for $PACKAGE_PATH"
 podman run -it --rm \
-    -v "$ROOTFS_DIR":/apollo:U \
-    -v "$PACKAGE_SCRIPT":/apollo/build.sh:ro \
-    apollo-forge-base /apollo/build.sh "$BUILD_ARGS"
+    -v "$TARGET_DIR":/apollo:U \
+    -v "$PACKAGES_DIR":/packages:ro \
+    apollo-forge-base \
+    "/packages/$PACKAGE_PATH.sh" "$BUILD_ARGS"
 

@@ -20,13 +20,15 @@ fi
 mkdir -p "$ROOTFS_DIR"
 
 echo "Build base image"
-$ROOT_DIR/container/build.sh
+$ROOT_DIR/container/build_image.sh
 
 echo "Start bootstrapping for base"
-$ROOT_DIR/build.sh binutils
-$ROOT_DIR/build.sh gcc-pass1
-$ROOT_DIR/build.sh glibc
-$ROOT_DIR/build.sh gcc-pass2
+echo "Build binutils"
+$ROOT_DIR/build.sh base/binutils
+echo "Build gcc pass 1"
+$ROOT_DIR/build.sh base/gcc-pass1
+#$ROOT_DIR/build.sh base/glibc
+#$ROOT_DIR/build.sh base/gcc-pass2
 
 echo "Building base system done"
 
