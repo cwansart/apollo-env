@@ -27,6 +27,7 @@ echo "Build binutils"
 $ROOT_DIR/build.sh base/binutils
 echo "Build gcc pass 1"
 $ROOT_DIR/build.sh base/gcc-pass1
+$ROOT_DIR/build.sh base/kernel-header
 #$ROOT_DIR/build.sh base/glibc
 #$ROOT_DIR/build.sh base/gcc-pass2
 

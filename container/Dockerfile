@@ -17,7 +17,9 @@ RUN apt-get update && \
         automake \
         autoconf \
         libtool \
-        texinfo && \
+        texinfo \
+        # for kernel headers
+        rsync && \
     rm -rf /var/lib/apt/lists/*
 
 RUN groupadd -g $GID user && \
